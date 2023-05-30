@@ -4,7 +4,7 @@ pipeline {
         maven 'maven_3_9_2'
     }
     environment {
-        def imageName = "jhonattan25/app-microservicios-eureka-server"
+        def imageName = "jhonattan25/app-microservicios-gateway-server"
         def date = new Date().format('yyyyMMdd')
         def release = "${env.BUILD_NUMBER}"
         def releaseId = "${env.BUILD_ID}"
@@ -17,7 +17,7 @@ pipeline {
     stages {
         stage('Build Maven') {
             steps {
-                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/Jhonattan25/eurekaserver.git']])
+                checkout scmGit(branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mvbenitez3/gatewayserver.git']])
                 sh 'mvn clean install'
             }
         }
@@ -52,12 +52,12 @@ pipeline {
                 echo "Deployment started ..."
                 sh 'ls -ltr'
                 sh 'pwd'
-                sh "sed -i 's/tagversion/${tag}/g' deployment/eureka-server.yaml"
+                sh "sed -i 's/tagversion/${tag}/g' deployment/gateway-server.yaml"
                 step([$class: 'KubernetesEngineBuilder', \
                   projectId: env.PROJECT_ID, \
                   clusterName: env.CLUSTER_NAME, \
                   location: env.LOCATION, \
-                  manifestPattern: 'deployment/eureka-server.yaml', \
+                  manifestPattern: 'deployment/gateway-server.yaml', \
                   credentialsId: env.CREDENTIALS_ID, \
                   verifyDeployments: true])
             }
