@@ -16,7 +16,7 @@ spec:
     spec: 
       containers:
         - name: gateway-server
-          image: jhonattan25/app-microservicios-gateway-server:1.0.0
+          image: jhonattan25/app-microservicios-gateway-server:tagversion
           ports:
           - containerPort: 8072
           env:
